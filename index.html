@@ -888,6 +888,8 @@ function clearSig() {
 
 // RAPPORT
 function generateReport() {
+  const nomClient = document.getElementById('client-nom').value || '—';
+  const prenomClient = document.getElementById('client-prenom').value || '—';
   const modal = document.getElementById('modal');
   const content = document.getElementById('modal-content');
 
@@ -897,8 +899,6 @@ function generateReport() {
   const convoyeur = document.getElementById('convoyeur').value || '—';
   const km = document.getElementById('km').value || '—';
   const carb = document.getElementById('carburant').value || '—';
-  const nomClient = document.getElementById('client-nom').value || '—';
-  const prenomClient = document.getElementById('client-prenom').value || '—';
   const allItems = SECTIONS.flatMap(s => s.items);
   const ok = allItems.filter(i => states[i.id] === 'ok');
   const ko = allItems.filter(i => states[i.id] === 'ko');
@@ -996,6 +996,8 @@ function exportPDF() {
   const modele = document.getElementById('modele').value || '—';
   const date = document.getElementById('date').value || '—';
   const convoyeur = document.getElementById('convoyeur').value || '—';
+  const nomClient = document.getElementById('client-nom').value || '—';
+  const prenomClient = document.getElementById('client-prenom').value || '—';['Client', ${prenomClient} ${nomClient}, '', ''],
   const km = document.getElementById('km').value || '—';
   const carb = document.getElementById('carburant').value || '—';
 
