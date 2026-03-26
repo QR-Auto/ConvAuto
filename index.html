@@ -1146,41 +1146,48 @@ function exportPDF() {
   
   // --- AJOUT DES PHOTOS ---
   const photosArray = Object.keys(photoData);
-  if (photosArray.length > 0) {
-    doc.addPage();
-    y = 20;
-    doc.setTextColor(225, 29, 72); // Titre Galerie en Rouge
-    doc.setFontSize(14);
-    doc.setFont('helvetica', 'bold');
-    doc.text("GALERIE PHOTOS", margin, y);
-    y += 12;
 
-    const imgW = 85;
-    const imgH = 65;
-    let currentX = margin;
+if (photosArray.length > 0) {
+  doc.addPage();
+  y = 20;
 
-      // Si on dépasse le bas de la page (en laissant de la place pour la signature)
-      if (y + imgH > 240) { 
-        doc.addPage();
-        y = 20;
-      }
+  doc.setTextColor(225, 29, 72);
+  doc.setFontSize(14);
+  doc.setFont('helvetica', 'bold');
+  doc.text("GALERIE PHOTOS", margin, y);
+  y += 12;
 
-      try {
-        doc.addImage(photoData[id], 'JPEG', currentX, y, imgW, imgH);
-        const label = PHOTOS_LABELS.find(p => p.id === id)?.label || "Photo";
-        doc.setFontSize(8);
-        doc.setTextColor(139, 144, 168);
-        doc.text(label, currentX + (imgW/2), y + imgH + 4, { align: 'center' });
-      } catch (e) { console.error(e); }
+  const imgW = 85;
+  const imgH = 65;
+  let currentX = margin;
 
-      if (index % 2 === 0) {
-        currentX = margin + imgW + 10;
-      } else {
-        currentX = margin;
-        y += imgH + 15;
-      }
-    });
-  }
+  photosArray.forEach((id, index) => {
+
+    if (y + imgH > 240) {
+      doc.addPage();
+      y = 20;
+    }
+
+    try {
+      doc.addImage(photoData[id], 'JPEG', currentX, y, imgW, imgH);
+
+      const label = PHOTOS_LABELS.find(p => p.id === id)?.label || "Photo";
+      doc.setFontSize(8);
+      doc.setTextColor(139, 144, 168);
+      doc.text(label, currentX + (imgW/2), y + imgH + 4, { align: 'center' });
+
+    } catch (e) {
+      console.error(e);
+    }
+
+    if (index % 2 === 0) {
+      currentX = margin + imgW + 10;
+    } else {
+      currentX = margin;
+      y += imgH + 15;
+    }
+  });
+}
 
   // --- SIGNATURE (Positionnée en bas de la page actuelle) ---
   if (sigHasMark) {
