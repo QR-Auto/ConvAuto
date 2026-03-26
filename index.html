@@ -1136,6 +1136,51 @@ function exportPDF() {
     });
     y += 4;
   });
+  
+   // --- AJOUT DES PHOTOS (La partie demandée) ---
+  const photosArray = Object.keys(photoData);
+  if (photosArray.length > 0) {
+    doc.addPage();
+    y = 20;
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(14);
+    doc.setFont('helvetica', 'bold');
+    doc.text("GALERIE PHOTOS", margin, y);
+    y += 15;
+
+    const imgW = 85;
+    const imgH = 65;
+    let currentX = margin;
+
+    photosArray.forEach((id, index) => {
+      // Vérifier si on doit changer de page (si 2 photos ont déjà été mises en hauteur)
+      if (y + imgH > 280) {
+        doc.addPage();
+        y = 20;
+      }
+
+      // Ajouter l'image
+      try {
+        doc.addImage(photoData[id], 'JPEG', currentX, y, imgW, imgH);
+        
+        // Légende sous la photo
+        const label = PHOTOS_LABELS.find(p => p.id === id)?.label || "Photo";
+        doc.setFontSize(9);
+        doc.text(label, currentX + (imgW/2), y + imgH + 5, { align: 'center' });
+      } catch (e) {
+        console.error("Erreur ajout image:", e);
+      }
+
+      // Calcul de la position de la prochaine photo (2 par ligne)
+      if (index % 2 === 0) {
+        currentX = margin + imgW + 10;
+      } else {
+        currentX = margin;
+        y += imgH + 20;
+      }
+    });
+  }
+  
 
   // Points à noter section
   const flagged = allItems.filter(i => states[i.id] === 'ko' || states[i.id] === 'rq');
