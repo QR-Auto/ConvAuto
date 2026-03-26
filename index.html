@@ -392,6 +392,13 @@
   .sig-section {
     margin: 20px;
   }
+  <div style="margin-bottom:10px; display:flex; gap:10px;">
+  <input type="text" id="client-nom" placeholder="Nom du client"
+    style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:white;">
+  
+  <input type="text" id="client-prenom" placeholder="Prénom du client"
+    style="flex:1;padding:10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:white;">
+</div>
   .sig-wrap {
     background: var(--surface);
     border: 1.5px solid var(--border);
@@ -890,7 +897,8 @@ function generateReport() {
   const convoyeur = document.getElementById('convoyeur').value || '—';
   const km = document.getElementById('km').value || '—';
   const carb = document.getElementById('carburant').value || '—';
-
+  const nomClient = document.getElementById('client-nom').value || '—';
+  const prenomClient = document.getElementById('client-prenom').value || '—';
   const allItems = SECTIONS.flatMap(s => s.items);
   const ok = allItems.filter(i => states[i.id] === 'ok');
   const ko = allItems.filter(i => states[i.id] === 'ko');
@@ -904,6 +912,7 @@ function generateReport() {
     <div class="rapport-line"><span class="rapport-key">Modèle</span><span class="rapport-val">${modele}</span></div>
     <div class="rapport-line"><span class="rapport-key">Date</span><span class="rapport-val">${date}</span></div>
     <div class="rapport-line"><span class="rapport-key">Convoyeur</span><span class="rapport-val">${convoyeur}</span></div>
+    <div class="rapport-line"><span class="rapport-key">Client</span><span class="rapport-val">${prenomClient} ${nomClient}</span></div>
     <div class="rapport-line"><span class="rapport-key">Kilométrage</span><span class="rapport-val">${km} km</span></div>
     <div class="rapport-line"><span class="rapport-key">Carburant</span><span class="rapport-val">${carb} %</span></div>
 
