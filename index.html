@@ -1144,20 +1144,78 @@ function exportPDF() {
     y += 4;
   });
   
-   // --- AJOUT DES PHOTOS (La partie demandée) ---
+  // --- AJOUT DES PHOTOS ---
   const photosArray = Object.keys(photoData);
   if (photosArray.length > 0) {
     doc.addPage();
     y = 20;
-    doc.setTextColor(0, 0, 0);
+    doc.setTextColor(225, 29, 72); // Titre Galerie en Rouge
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text("GALERIE PHOTOS", margin, y);
-    y += 15;
+    y += 12;
 
     const imgW = 85;
     const imgH = 65;
     let currentX = margin;
+
+    photosArray.forEach((id, index) => {
+      // Si on dépasse le bas de la page (en laissant de la place pour la signature)
+      if (y + imgH > 240) { 
+        doc.addPage();
+        y = 20;
+      }
+
+      try {
+        doc.addImage(photoData[id], 'JPEG', currentX, y, imgW, imgH);
+        const label = PHOTOS_LABELS.find(p => p.id === id)?.label || "Photo";
+        doc.setFontSize(8);
+        doc.setTextColor(139, 144, 168);
+        doc.text(label, currentX + (imgW/2), y + imgH + 4, { align: 'center' });
+      } catch (e) { console.error(e); }
+
+      if (index % 2 === 0) {
+        currentX = margin + imgW + 10;
+      } else {
+        currentX = margin;
+        y += imgH + 15;
+      }
+    });
+  }
+
+  // --- SIGNATURE (Positionnée en bas de la page actuelle) ---
+  if (sigHasMark) {
+    // On force la position à 45mm du bas de la page pour qu'elle soit toujours au même endroit
+    const sigY = 250; 
+    
+    doc.setDrawColor(46, 50, 73);
+    doc.setLineWidth(0.1);
+    doc.line(margin, sigY - 5, W - margin, sigY - 5); // Petite ligne de séparation
+
+    doc.setTextColor(139, 144, 168);
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text("SIGNATURE CLIENT :", margin, sigY);
+
+    try {
+      const sigImg = sigCanvas.toDataURL('image/png');
+      // On place la signature sous le texte
+      doc.addImage(sigImg, 'PNG', margin, sigY + 2, 60, 25);
+    } catch(e) {}
+  }
+
+  // Footer (Bas de page automatique sur toutes les pages)
+  const pageCount = doc.internal.getNumberOfPages();
+  for(let i = 1; i <= pageCount; i++) {
+    doc.setPage(i);
+    doc.setFillColor(15, 17, 23);
+    doc.rect(0, 285, W, 12, 'F');
+    doc.setTextColor(139, 144, 168);
+    doc.setFontSize(7);
+    doc.text(`Document généré le ${date} — Page ${i}/${pageCount}`, W / 2, 292, { align: 'center' });
+  }
+
+  doc.save(`Etat_Vehicule_${immat.replace(/-/g,'')}.pdf`);
 
     photosArray.forEach((id, index) => {
       // Vérifier si on doit changer de page (si 2 photos ont déjà été mises en hauteur)
