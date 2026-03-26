@@ -658,7 +658,7 @@
     </div>
     <div id="modal-content"></div>
     <button class="btn-share" onclick="shareReport()">📤 Partager / Copier</button>
-    <button class="btn-share" onclick="exportPDF()" style="margin-top:10px;background:linear-gradient(135deg,#e8441a,#f5a623);border-color:transparent;color:white;font-weight:800;">📄 Enregistrer en PDF</button>
+    <button class="btn-share" onclick="exportPDF()" style="margin-top:10px;background:linear-gradient(135deg, var(--accent2), var(--accent)); border-color:transparent; color:white; font-weight:800;">📄 Enregistrer en PDF</button>
   </div>
 </div>
 
@@ -991,28 +991,35 @@ function exportPDF() {
   const checkY = () => { if (y > 270) { doc.addPage(); y = 20; } };
 
   // Header band
-  doc.setFillColor(15, 17, 23);
+  doc.setFillColor(15, 17, 23); // Fond sombre
   doc.rect(0, 0, W, 28, 'F');
-  doc.setFillColor(225, 29, 72);
+  
+  doc.setFillColor(225, 29, 72); // Ligne horizontale ROUGE
   doc.rect(0, 26, W, 2, 'F');
-  doc.setTextColor(225, 29, 72);
+
+  // Titre Principal
+  doc.setTextColor(225, 29, 72); // Texte ROUGE
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
   doc.text('Bonnefis Convoyage', margin, 17);
+
+  // Sous-titre (décalé pour ne pas chevaucher)
   doc.setTextColor(240, 242, 248);
-  doc.setFontSize(11);
+  doc.setFontSize(10);
   doc.setFont('helvetica', 'normal');
-  doc.text('ÉTAT DU VÉHICULE', margin + 48, 17);
+  doc.text('ÉTAT DU VÉHICULE', margin + 72, 17); // Augmenté à 72 pour laisser de la place
 
   // Type badge
   const typeLabel = currentType.toUpperCase();
-  const badgeColor = currentType === 'remise' ? [232, 68, 26] : [34, 197, 94];
+  // Remise en rouge, Restitution reste en vert
+  const badgeColor = currentType === 'remise' ? [225, 29, 72] : [34, 197, 94]; 
+  
   doc.setFillColor(...badgeColor);
-  doc.roundedRect(W - margin - 28, 8, 28, 12, 3, 3, 'F');
+  doc.roundedRect(W - margin - 35, 8, 35, 12, 3, 3, 'F'); // Largeur badge augmentée à 35
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(9);
   doc.setFont('helvetica', 'bold');
-  doc.text(typeLabel, W - margin - 14, 16, { align: 'center' });
+  doc.text(typeLabel, W - margin - 17.5, 16, { align: 'center' });
 
   y = 38;
 
