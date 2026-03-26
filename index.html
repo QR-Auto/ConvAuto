@@ -1159,7 +1159,6 @@ function exportPDF() {
     const imgH = 65;
     let currentX = margin;
 
-    photosArray.forEach((id, index) => {
       // Si on dépasse le bas de la page (en laissant de la place pour la signature)
       if (y + imgH > 240) { 
         doc.addPage();
@@ -1213,11 +1212,11 @@ function exportPDF() {
     doc.setTextColor(139, 144, 168);
     doc.setFontSize(7);
     doc.text(`Document généré le ${date} — Page ${i}/${pageCount}`, W / 2, 292, { align: 'center' });
+    doc.save(`Etat_Vehicule_${immat.replace(/-/g,'')}.pdf`);
   }
 
-  doc.save(`Etat_Vehicule_${immat.replace(/-/g,'')}.pdf`);
-
-    photosArray.forEach((id, index) => {
+  
+  
       // Vérifier si on doit changer de page (si 2 photos ont déjà été mises en hauteur)
       if (y + imgH > 280) {
         doc.addPage();
