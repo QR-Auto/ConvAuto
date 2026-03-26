@@ -991,15 +991,15 @@ function exportPDF() {
   const checkY = () => { if (y > 270) { doc.addPage(); y = 20; } };
 
   // Header band
-  doc.setFillColor(225, 29, 72);
+  doc.setFillColor(15, 17, 23);
   doc.rect(0, 0, W, 28, 'F');
   doc.setFillColor(225, 29, 72);
   doc.rect(0, 26, W, 2, 'F');
   doc.setTextColor(225, 29, 72);
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
-  doc.text('AUTOCONV', margin, 17);
-  doc.setTextColor(225, 29, 72);
+  doc.text('Bonnefis Convoyage', margin, 17);
+  doc.setTextColor(240, 242, 248);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
   doc.text('ÉTAT DU VÉHICULE', margin + 48, 17);
