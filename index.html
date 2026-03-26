@@ -11,8 +11,8 @@
     --bg: #0f1117;
     --surface: #1a1d27;
     --surface2: #22263a;
-    --accent: #f5a623;
-    --accent2: #e8441a;
+    --accent: #e11d48;
+    --accent2: #9f1239;
     --green: #22c55e;
     --red: #ef4444;
     --yellow: #f59e0b;
@@ -847,7 +847,7 @@ function initSig() {
   sigCanvas.width = rect.width * dpr;
   sigCanvas.height = 140 * dpr;
   sigCtx.scale(dpr, dpr);
-  sigCtx.strokeStyle = '#f5a623';
+  sigCtx.strokeStyle = '#e11d48';
   sigCtx.lineWidth = 2.5;
   sigCtx.lineCap = 'round';
   sigCtx.lineJoin = 'round';
@@ -943,7 +943,7 @@ function shareReport() {
   const rq = allItems.filter(i => states[i.id] === 'rq');
   const ok = allItems.filter(i => states[i.id] === 'ok');
 
-  let txt = `🚗 ÉTAT VÉHICULE — ${currentType.toUpperCase()}\n`;
+  let txt = `🏎️ ÉTAT VÉHICULE — ${currentType.toUpperCase()}\n`;
   txt += `━━━━━━━━━━━━━━━━━━━\n`;
   txt += `📋 ${immat} • ${modele}\n📅 ${date} • ${convoyeur}\n📍 ${km} km • ⛽ ${carb}%\n\n`;
   txt += `✅ Conformes: ${ok.length}\n⚠️ Remarques: ${rq.length}\n❌ Non conf.: ${ko.length}\n\n`;
@@ -991,15 +991,15 @@ function exportPDF() {
   const checkY = () => { if (y > 270) { doc.addPage(); y = 20; } };
 
   // Header band
-  doc.setFillColor(15, 17, 23);
+  doc.setFillColor(225, 29, 72);
   doc.rect(0, 0, W, 28, 'F');
-  doc.setFillColor(245, 166, 35);
+  doc.setFillColor(225, 29, 72);
   doc.rect(0, 26, W, 2, 'F');
-  doc.setTextColor(245, 166, 35);
+  doc.setTextColor(225, 29, 72);
   doc.setFontSize(20);
   doc.setFont('helvetica', 'bold');
   doc.text('AUTOCONV', margin, 17);
-  doc.setTextColor(240, 242, 248);
+  doc.setTextColor(225, 29, 72);
   doc.setFontSize(11);
   doc.setFont('helvetica', 'normal');
   doc.text('ÉTAT DU VÉHICULE', margin + 48, 17);
