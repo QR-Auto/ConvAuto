@@ -1220,7 +1220,7 @@ if (photosArray.length > 0) {
     doc.setTextColor(139, 144, 168);
     doc.setFontSize(9);
     doc.setFont('helvetica', 'bold');
-    doc.text("SIGNATURE CLIENT :", margin, sigY);
+    doc.text(`SIGNATURE CLIENT : ${prenomClient} ${nomClient}`, margin, sigY);
 
     try {
       const sigImg = sigCanvas.toDataURL('image/png');
