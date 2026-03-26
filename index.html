@@ -1212,102 +1212,11 @@ function exportPDF() {
     doc.setTextColor(139, 144, 168);
     doc.setFontSize(7);
     doc.text(`Document généré le ${date} — Page ${i}/${pageCount}`, W / 2, 292, { align: 'center' });
-    doc.save(`Etat_Vehicule_${immat.replace(/-/g,'')}.pdf`);
   }
 
-  
-  
-      // Vérifier si on doit changer de page (si 2 photos ont déjà été mises en hauteur)
-      if (y + imgH > 280) {
-        doc.addPage();
-        y = 20;
-      }
-
-      // Ajouter l'image
-      try {
-        doc.addImage(photoData[id], 'JPEG', currentX, y, imgW, imgH);
-        
-        // Légende sous la photo
-        const label = PHOTOS_LABELS.find(p => p.id === id)?.label || "Photo";
-        doc.setFontSize(9);
-        doc.text(label, currentX + (imgW/2), y + imgH + 5, { align: 'center' });
-      } catch (e) {
-        console.error("Erreur ajout image:", e);
-      }
-
-      // Calcul de la position de la prochaine photo (2 par ligne)
-      if (index % 2 === 0) {
-        currentX = margin + imgW + 10;
-      } else {
-        currentX = margin;
-        y += imgH + 20;
-      }
-    });
-  }
-  
-
-  // Points à noter section
-  const flagged = allItems.filter(i => states[i.id] === 'ko' || states[i.id] === 'rq');
-  if (flagged.length > 0) {
-    checkY();
-    doc.setFillColor(232, 68, 26, 0.15);
-    doc.setDrawColor(232, 68, 26);
-    doc.setLineWidth(0.5);
-    doc.roundedRect(margin, y, colW, 8 + flagged.length * 10 + 4, 2, 2, 'FD');
-    doc.setTextColor(245, 166, 35);
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'bold');
-    doc.text('POINTS À NOTER', margin + 4, y + 5.5);
-    y += 10;
-    flagged.forEach(item => {
-      const s = states[item.id];
-      const txt = document.getElementById(`txt-${item.id}`)?.value;
-      const cr = s === 'ko' ? 239 : 245;
-      const cg = s === 'ko' ? 68 : 158;
-      const cb = s === 'ko' ? 68 : 11;
-      doc.setTextColor(cr, cg, cb);
-      doc.setFontSize(8.5);
-      doc.setFont('helvetica', 'bold');
-      doc.text(`${s === 'ko' ? '✗' : '!'} ${item.name}${txt ? ': ' + txt : ''}`, margin + 4, y + 5);
-      y += 10;
-    });
-    y += 6;
-  }
-
-  // Signature
-  checkY();
-  if (sigHasMark) {
-    doc.setFillColor(26, 29, 39);
-    doc.roundedRect(margin, y, colW, 36, 2, 2, 'F');
-    doc.setDrawColor(46, 50, 73);
-    doc.roundedRect(margin, y, colW, 36, 2, 2, 'S');
-    doc.setTextColor(139, 144, 168);
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'bold');
-    doc.text('SIGNATURE CLIENT', margin + 4, y + 6);
-    try {
-      const sigImg = sigCanvas.toDataURL('image/png');
-      doc.addImage(sigImg, 'PNG', margin + 4, y + 8, colW - 8, 24);
-    } catch(e) {}
-    y += 40;
-  }
-
-  // Footer
-  doc.setFillColor(15, 17, 23);
-  doc.rect(0, 285, W, 12, 'F');
-  doc.setTextColor(139, 144, 168);
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Document généré le ${new Date().toLocaleDateString('fr-FR')} — AutoConv`, W / 2, 292, { align: 'center' });
-
-  const filename = `etat_vehicule_${immat.replace(/-/g,'')}_${date}.pdf`;
-  doc.save(filename);
-
-  const toast = document.getElementById('toast');
-  toast.textContent = '📄 PDF téléchargé !';
-  toast.classList.add('show');
-  setTimeout(() => { toast.classList.remove('show'); toast.textContent = '✓ Rapport généré'; }, 2500);
-}
+  doc.save(`Etat_Vehicule_${immat.replace(/-/g,'')}.pdf`);
+  closeModal();
+} // <--- BIEN VÉRIFIER QUE CETTE ACCOLADE FERME LA FONCTION exportPDF
 
 // INIT
 buildChecklist();
