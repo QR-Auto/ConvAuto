@@ -1275,41 +1275,6 @@ function exportPDF() {
     y += 6;
   }
 
-  // Signature
-  checkY();
-  if (sigHasMark) {
-    doc.setFillColor(26, 29, 39);
-    doc.roundedRect(margin, y, colW, 36, 2, 2, 'F');
-    doc.setDrawColor(46, 50, 73);
-    doc.roundedRect(margin, y, colW, 36, 2, 2, 'S');
-    doc.setTextColor(139, 144, 168);
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'bold');
-    doc.text('SIGNATURE CLIENT', margin + 4, y + 6);
-    try {
-      const sigImg = sigCanvas.toDataURL('image/png');
-      doc.addImage(sigImg, 'PNG', margin + 4, y + 8, colW - 8, 24);
-    } catch(e) {}
-    y += 40;
-  }
-
-  // Footer
-  doc.setFillColor(15, 17, 23);
-  doc.rect(0, 285, W, 12, 'F');
-  doc.setTextColor(139, 144, 168);
-  doc.setFontSize(7);
-  doc.setFont('helvetica', 'normal');
-  doc.text(`Document généré le ${new Date().toLocaleDateString('fr-FR')} — AutoConv`, W / 2, 292, { align: 'center' });
-
-  const filename = `etat_vehicule_${immat.replace(/-/g,'')}_${date}.pdf`;
-  doc.save(filename);
-
-  const toast = document.getElementById('toast');
-  toast.textContent = '📄 PDF téléchargé !';
-  toast.classList.add('show');
-  setTimeout(() => { toast.classList.remove('show'); toast.textContent = '✓ Rapport généré'; }, 2500);
-}
-
 // INIT
 buildChecklist();
 buildPhotos();
