@@ -1233,6 +1233,13 @@ if (photosArray.length > 0) {
   closeModal();
 } // <--- BIEN VÉRIFIER QUE CETTE ACCOLADE FERME LA FONCTION exportPDF
 
+  function setAllOk() {
+  Object.keys(states).forEach(id => {
+    states[id] = 'ok';
+  });
+
+  buildChecklist(); // recharge l'affichage
+  }
 // INIT
 buildChecklist();
 buildPhotos();
